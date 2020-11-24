@@ -1,6 +1,8 @@
 const fs = require("fs");
 const notes = fs.readFileSync("./db/db.json");
 let jsonNotes = JSON.parse(notes);
+let db = require("../db/db.json");
+console.log(db);
 
 module.exports = (app) => {
   app.get("/api/notes", (req, res) => {
@@ -22,10 +24,12 @@ module.exports = (app) => {
   });
 
   app.delete("/api/notes/:id", (req, res) => {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
     jsonNotes = jsonNotes.filter((note) => {
-      note.id !== id;
+      console.log(note.id, id);
+      return note.id !== id;
     });
+    console.log(jsonNotes);
     fs.writeFile("./db/db.json", JSON.stringify(jsonNotes), (err) => {
       if (err) throw err;
     });
