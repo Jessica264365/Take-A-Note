@@ -1,7 +1,6 @@
 const fs = require("fs");
 const notes = fs.readFileSync("./db/db.json");
-const jsonNotes = JSON.parse(notes);
-
+let jsonNotes = JSON.parse(notes);
 
 module.exports = (app) => {
   app.get("/api/notes", (req, res) => {
@@ -22,12 +21,14 @@ module.exports = (app) => {
     res.send(newNote);
   });
 
-  app.delete("/api/notes", (req, res) => {
-    const id = req.params.id
-    jsonNotes.filter()
-   
-    fs.writeFile("./db/db.json", savedNotes, (err) => {
+  app.delete("/api/notes/:id", (req, res) => {
+    const id = req.params.id;
+    jsonNotes = jsonNotes.filter((note) => {
+      note.id !== id;
+    });
+    fs.writeFile("./db/db.json", JSON.stringify(jsonNotes), (err) => {
       if (err) throw err;
     });
+    res.send(jsonNotes);
   });
 };
