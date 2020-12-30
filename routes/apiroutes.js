@@ -26,7 +26,6 @@ module.exports = (app) => {
   app.delete("/api/notes/:id", (req, res) => {
     const id = parseInt(req.params.id);
     jsonNotes = jsonNotes.filter((note) => {
-      console.log(note.id, id);
       return note.id !== id;
     });
     console.log(jsonNotes);
